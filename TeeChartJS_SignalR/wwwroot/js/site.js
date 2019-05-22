@@ -15,8 +15,6 @@ $(function () {
     series.format.shadow.visible = false;
     chart.addSeries(series);
 
-    chart.draw();
-
     resizeChart();
 
     var signalConnection = new signalR.HubConnectionBuilder().withUrl('/signalRHub').build();
@@ -38,10 +36,18 @@ $(function () {
 
 function resizeChart() {
     var w = $canvas.parent().width();
-    var h = $('footer').position().top - $canvas.position().top - 20;
+    var h = $(window).height();
+    h -= $('.navbar').outerHeight(true);
+    h -= $('main').children().outerHeight(true);
+    h -= parseInt($('main').children().first().children().last().css('margin-bottom'));
+    h -= parseInt($('main').css('padding-bottom'));
+    h -= $('footer').height();
+    h -= 50;
 
     canvas.width = w;
     chart.bounds.width = w;
     canvas.height = h;
     chart.bounds.height = h;
+
+    chart.draw();
 }
